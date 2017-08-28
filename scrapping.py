@@ -55,7 +55,7 @@ def encuentraDatosCine(stop):
 	#Query the website and return the html to the variable 'page'
 	page = urllib2.urlopen(cartelera)
 
-	soup = BeautifulSoup(page)
+	soup = BeautifulSoup(page, 'html.parser')
 
 	aux = Cine()
 	k = 0
@@ -64,16 +64,17 @@ def encuentraDatosCine(stop):
 		listaPeliculasAux = []
 		listaHorariosAux = []
 		for j in i.find_all('div', class_='pildora'):
-			nombrePelicula = j.a.string	
-			listaPeliculasAux.append(nombrePelicula)
-			#print listaPeliculasAux
-			p = re.compile('\d+:\d+')
-			auxStringHorario = ''
+			if j.a is not None:
+				nombrePelicula = j.a.string	
+				listaPeliculasAux.append(nombrePelicula)
+				#print listaPeliculasAux
+				p = re.compile('\d+:\d+')
+				auxStringHorario = ''
 
-			for horario in p.findall(str(j.h5)):
-				auxStringHorario = auxStringHorario + horario + ' '
+				for horario in p.findall(str(j.h5)):
+					auxStringHorario = auxStringHorario + horario + ' '
 
-			listaHorariosAux.append(auxStringHorario)
+				listaHorariosAux.append(auxStringHorario)
 
 		aux.nombrePeliculas_ = listaPeliculasAux
 		aux.horarioPeliculas_ = listaHorariosAux
