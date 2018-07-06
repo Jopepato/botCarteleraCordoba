@@ -6,11 +6,11 @@ import telebot
 from time import sleep
 from functions import cinesDeVerano, encuentraDatosCine, daFormatoCadena
 from cinemaNames import *
+from private import TOKEN
 import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
-TOKEN = '330883133:AAHvkTpcFu8Z-0XR8JmfUsppRqL6BWTBSII' # Nuestro tokken del bot (el que @BotFather nos dió).
 bot = telebot.TeleBot(TOKEN) # Creamos el objeto de nuestro bot.
 
 #Funciones
