@@ -1,4 +1,3 @@
-import urllib2
 import re
 from bs4 import BeautifulSoup
 
@@ -28,9 +27,3 @@ class Cine:
 
 	def setHorarioPeliculas(self, horarioPeliculas):
 		self.horarioPeliculas_ = horarioPeliculas
-
-	def printTotal(self):
-		print self.getNombreCine()
-		print self.getNombrePeliculas()
-		print self.getHorarioPeliculas()
-		return True
