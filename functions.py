@@ -47,9 +47,9 @@ def cinesDeVerano():
     #Query the website and return the html to the variable 'page'
     response = requests.get(CARTELERANAME)
     if response.status_code == 200:
-        
+
         try:
-            soup = BeautifulSoup(response.content)
+            soup = BeautifulSoup(response.content, 'html.parser')
         except Exception as e:
             return False
         
