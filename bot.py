@@ -10,7 +10,8 @@ from private import TOKEN
 import sys
 
 bot = telebot.TeleBot(TOKEN) # Creamos el objeto de nuestro bot.
-
+logger = logging.getLogger('botLogger')
+logger.setLevel(logging.ERROR)
 #Funciones
 @bot.message_handler(commands=['start', 'help'])
 def send_welcome(message):
@@ -23,27 +24,34 @@ def command_cineTablero(m): # Definimos una función que resuelva lo que necesit
     cid = m.chat.id # Guardamos el ID de la conversación para poder responder.
     #Tenemos que coger el cine y devolveremos los horarios que queremos
     datosCine = encuentraDatosCine(TABLERONAME)
-    #horarios.printTotal()
-    mensajeDevuelta= daFormatoCadena(datosCine)
-    bot.send_message(cid, mensajeDevuelta, parse_mode='HTML')
-    #Vamos a intentar parsear un poco el mensaje
+    if datosCine:
+        mensajeDevuelta= daFormatoCadena(datosCine)
+        bot.send_message(cid, mensajeDevuelta, parse_mode='HTML')
+    else:
+        bot.send_message(cid, 'Something went wrong', parse_mode='HTML')
 
 
 @bot.message_handler(commands=['guadalquivir']) # Indicamos que lo siguiente va a controlar el comando '/miramacho'
 def command_cineGuadalquivir(m): # Definimos una función que resuleva lo que necesitemos.
-	cid = m.chat.id # Guardamos el ID de la conversación para poder responder.
-	#bot.send_message( cid, 'Vete a la mierda') # Con la función 'send_message()' del bot, enviamos al ID almacenado el texto que queremos.
-	datosCine = encuentraDatosCine(GUADALQUIVIRNAME)
-	mensajeDevuelta= daFormatoCadena(datosCine)
-	bot.send_message(cid, mensajeDevuelta, parse_mode='HTML')
+    cid = m.chat.id # Guardamos el ID de la conversación para poder responder.
+    #bot.send_message( cid, 'Vete a la mierda') # Con la función 'send_message()' del bot, enviamos al ID almacenado el texto que queremos.
+    datosCine = encuentraDatosCine(GUADALQUIVIRNAME)
+    if datosCine:
+        mensajeDevuelta= daFormatoCadena(datosCine)
+        bot.send_message(cid, mensajeDevuelta, parse_mode='HTML')
+    else:
+        bot.send_message(cid, 'Something went wrong', parse_mode='HTML')
 
 @bot.message_handler(commands=['lucena'])
 def command_cineLucena(m):
-	cid = m.chat.id # Guardamos el ID de la conversación para poder responder.
-	#bot.send_message( cid, 'Vete a la mierda') # Con la función 'send_message()' del bot, enviamos al ID almacenado el texto que queremos.
-	datosCine = encuentraDatosCine(LUCENANAME)
-	mensajeDevuelta= daFormatoCadena(datosCine)
-	bot.send_message(cid, mensajeDevuelta, parse_mode='HTML')
+    cid = m.chat.id # Guardamos el ID de la conversación para poder responder.
+    #bot.send_message( cid, 'Vete a la mierda') # Con la función 'send_message()' del bot, enviamos al ID almacenado el texto que queremos.
+    datosCine = encuentraDatosCine(LUCENANAME)
+    if datosCine:
+        mensajeDevuelta= daFormatoCadena(datosCine)
+        bot.send_message(cid, mensajeDevuelta, parse_mode='HTML')
+    else:
+        bot.send_message(cid, 'Something went wrong', parse_mode='HTML')
 
 @bot.message_handler(commands=['cinesDeVerano'])
 def command_cinesDeVerano(m):
@@ -65,5 +73,3 @@ try:
 except Exception as e:
 
     logger.error(e)
-
-    time.sleep(3)
