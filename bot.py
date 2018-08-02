@@ -67,7 +67,7 @@ def command_cinesDeVerano(m):
 
 try:
 
-    bot.polling(none_stop=True)
+    bot.polling(none_stop=True, interval=1.0, timeout=200)
 
 except Exception as e:
 
