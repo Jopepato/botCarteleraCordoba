@@ -1,5 +1,6 @@
 import requests
 import re
+import imdb
 from bs4 import BeautifulSoup
 from cine import Cine
 from cinemaNames import *
@@ -59,7 +60,7 @@ def cinesDeVerano():
             auxCine.nombreCine_ = str(i.h1.string)
             listaPeliculasAux = []
             listaHorariosAux = []
-            if auxCine.getNombreCine() == SANANDRESNAME or auxCine.getNombreCine() == OLIMPIANAME or auxCine.getNombreCine() == FUENSECANAME or auxCine.getNombreCine() == DELICIASNAME:
+            if auxCine.getNombreCine() == SANANDRESNAME or auxCine.getNombreCine() == OLIMPIANAME or auxCine.getNombreCine() == FUENSECANAME or auxCine.getNombreCine() == DELICIASNAME or auxCine.getNombreCine() == PLAZADETOROSNAME:
                 for j in i.find_all('div', class_='pildora'):
                     nombrePelicula = j.a.string	
                     listaPeliculasAux.append(nombrePelicula)
@@ -77,7 +78,9 @@ def cinesDeVerano():
                 cadenaCinesDeVerano = cadenaCinesDeVerano + "<b>" + auxCine.getNombreCine() + "</b>" + '\n'
                 p = 0
                 for q in auxCine.getNombrePeliculas():
-                    cadenaCinesDeVerano = cadenaCinesDeVerano + q + '\n'
+                    #Tenemos que encontrar el id de la pelicula y pasar el titulo
+                    movieID = getMovieID(q)
+                    cadenaCinesDeVerano = cadenaCinesDeVerano + '<a href="' + IMDBTITLE + movieID + '">' + q + '</a>' + '\n'
                     cadenaCinesDeVerano = cadenaCinesDeVerano + "<i>" + auxCine.horarioPeliculas_[p] + "</i>" + '\n'
                     p = p+1
                 cadenaCinesDeVerano = cadenaCinesDeVerano + '\n'
@@ -87,12 +90,19 @@ def cinesDeVerano():
         return False
 
 def daFormatoCadena(cine):
-	#Con esta funcion nos viene un objeto de la clase cine e intentamos montar una cadena que no quede mal
-	cadena = "<b>" + cine.getNombreCine() + "</b>" + '\n\n'
-	j=0
-	for i in cine.getNombrePeliculas():
-		#Vamos metiendo un salto de linea por pelicula y horario
-		cadena = cadena + "<b>" + i + "</b>" +  '\n'
-		cadena = cadena + "<i>" + cine.horarioPeliculas_[j] +"</i>" + '\n\n'
-		j = j+1
-	return cadena
+    #Con esta funcion nos viene un objeto de la clase cine e intentamos montar una cadena que no quede mal
+    cadena = "<b>" + cine.getNombreCine() + "</b>" + '\n\n'
+    j=0
+    for i in cine.getNombrePeliculas():
+        movieID = getMovieID(i)
+        cadena = cadena + '<a href="' + IMDBTITLE + movieID + '">' + i + '</a>' + '\n'
+        cadena = cadena + "<i>" + cine.horarioPeliculas_[j] +"</i>" + '\n\n'
+        j = j+1
+    return cadena
+
+def getMovieID(movieName):
+    ia = imdb.IMDb()
+
+    movies = ia.search_movie(movieName)
+
+    return movies[0].movieID
