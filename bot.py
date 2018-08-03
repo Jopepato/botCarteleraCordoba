@@ -6,10 +6,10 @@ import telebot
 from time import sleep
 from functions import cinesDeVerano, encuentraDatosCine, daFormatoCadena
 from cinemaNames import *
-#from private import TOKEN
+from private import TOKEN
 import sys
 
-bot = telebot.TeleBot('330883133:AAHvkTpcFu8Z-0XR8JmfUsppRqL6BWTBSII') # Creamos el objeto de nuestro bot.
+bot = telebot.TeleBot(TOKEN) # Creamos el objeto de nuestro bot.
 logger = logging.getLogger('botLogger')
 logger.setLevel(logging.ERROR)
 
