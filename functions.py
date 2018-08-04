@@ -80,7 +80,10 @@ def cinesDeVerano():
                 for q in auxCine.getNombrePeliculas():
                     #Tenemos que encontrar el id de la pelicula y pasar el titulo
                     movieID = getMovieID(q)
-                    cadenaCinesDeVerano = cadenaCinesDeVerano + '<a href="' + IMDBTITLE + movieID + '">' + q + '</a>' + '\n'
+                    if movieID != "":
+                        cadenaCinesDeVerano = cadenaCinesDeVerano + '<a href="' + IMDBTITLE + movieID + '">' + q + '</a>' + '\n'
+                    else:
+                        cadenaCinesDeVerano = cadenaCinesDeVerano + '<b>' + q + '</b>' + '\n'
                     cadenaCinesDeVerano = cadenaCinesDeVerano + "<i>" + auxCine.horarioPeliculas_[p] + "</i>" + '\n'
                     p = p+1
                 cadenaCinesDeVerano = cadenaCinesDeVerano + '\n'
@@ -102,7 +105,9 @@ def daFormatoCadena(cine):
 
 def getMovieID(movieName):
     ia = imdb.IMDb()
-
-    movies = ia.search_movie(movieName)
+    try:
+        movies = ia.search_movie(movieName)
+    except IOError as e:
+        return ""
 
     return movies[0].movieID
